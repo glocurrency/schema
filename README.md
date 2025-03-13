@@ -1,2 +1,2 @@
 # schema
-schemas for events used @ GloCurrency
+Schemas for events used @ GloCurrency
