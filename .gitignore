@@ -127,3 +127,5 @@ dist
 # ignore generated files
 packages/typescript/generated/*
 !packages/typescript/generated/index.d.ts
+packages/golang/generated.go
+packages/golang/go-jsonschema
