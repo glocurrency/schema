@@ -31,13 +31,18 @@ jobs:
           php-version: '8.2'
           extensions: none, mbstring
 
+      - name: Git Identity
+        run: |
+          git config --global user.name 'Github Actions'
+          git config --global user.email 'github-actions@github.com'
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - run: ./scripts/release.sh
 
       # - name: Push commit + tags (Go + PHP)
-      #   run: |
-      #     git config user.name github-actions
-      #     git config user.email github-actions@github.com
-      #     git push --follow-tags
+      #   run: git push --follow-tags
 
       # - name: Publish NPM package (TypeScript)
       #   run: cd packages/typescript && npm publish --access public
