@@ -21,6 +21,8 @@ jobs:
           node-version: 22
           cache: 'npm'
           cache-dependency-path: packages/typescript/package-lock.json
+          registry-url: 'https://registry.npmjs.org/'
+          scope: '@glocurrency'
 
       - uses: actions/setup-go@v5
         with:
