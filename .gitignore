@@ -132,9 +132,3 @@ _ide_helper_models.php
 .phpstorm*
 .psalm/cache
 
-# GENERATED FILES START
-packages/typescript/generated/*
-!packages/typescript/generated/index.d.ts
-packages/go/generated.go
-packages/php/src
-# GENERATED FILES END
