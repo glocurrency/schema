@@ -19,7 +19,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
 
       - uses: actions/setup-go@v5
         with:
@@ -34,7 +33,7 @@ jobs:
       - run: npx changeset version
       - run: ./scripts/release.sh
 
-      # - name: Push commit + tags (Golang + PHP)
+      # - name: Push commit + tags (Go + PHP)
       #   run: |
       #     git config user.name github-actions
       #     git config user.email github-actions@github.com

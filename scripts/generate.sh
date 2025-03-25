@@ -15,7 +15,7 @@ if ! command -v go-jsonschema >/dev/null 2>&1; then
   echo "🛠️ Installing go-jsonschema..."
   bash ./scripts/install-go-jsonschema.sh
 fi
-go-jsonschema -p schema -o packages/golang/generated.go --only-models schemas/*.json
+go-jsonschema -p schema -o packages/go/generated.go --only-models schemas/*.json
 
 echo "🐘 Running PHP codegen..."
 pushd packages/php > /dev/null
