@@ -7,7 +7,7 @@ pushd packages/typescript > /dev/null
 npm install
 
 echo "🔖 Applying version bumps with Changesets..."
-npx changeset version
+npm run version
 popd > /dev/null
 
 VERSION=$(jq -r '.version' packages/typescript/package.json)
