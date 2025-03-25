@@ -27,6 +27,7 @@ go-jsonschema -p schema -o packages/go/generated.go --only-models schemas/*.json
 
 echo "🐘 Running PHP codegen..."
 pushd packages/php > /dev/null
+composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 php vendor/bin/s2c generate:fromspec
 popd > /dev/null
 
