@@ -3,8 +3,16 @@
     "title": "EchoEvent",
     "type": "object",
     "properties": {
-      "message": { "type": "string" },
-      "timestamp": { "type": "string", "format": "date-time" }
+      "type": { "type": "string" },
+      "version": { "type": "number" },
+      "data": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        },
+        "required": ["message", "timestamp"]
+      }
     },
-    "required": ["message", "timestamp"]
+    "required": ["type", "version", "data"]
   }

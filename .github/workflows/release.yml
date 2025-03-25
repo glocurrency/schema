@@ -1,0 +1,46 @@
+name: release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 1.23
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: none, mbstring
+
+      - run: npm install
+      - run: npx changeset version
+      - run: ./scripts/release.sh
+
+      # - name: Push commit + tags (Golang + PHP)
+      #   run: |
+      #     git config user.name github-actions
+      #     git config user.email github-actions@github.com
+      #     git push --follow-tags
+
+      # - name: Publish NPM package (TypeScript)
+      #   run: cd packages/typescript && npm publish --access public
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

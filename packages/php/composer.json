@@ -1,10 +1,12 @@
 {
-    "name": "glocurrency/schema",
-    "version": "0.0.1",
-    "autoload": {
-        "psr-4": {
-            "GloCurrency\\Schema\\": "src/"
-        }
-    },
-    "require": {}
+  "name": "glocurrency/schema",
+  "version": "0.0.1",
+  "autoload": {
+    "psr-4": {
+      "GloCurrency\\Schema\\": "src/"
+    }
+  },
+  "require-dev": {
+    "helmich/schema2class": "^3.3"
+  }
 }

@@ -124,8 +124,17 @@ dist
 .pnpm-store
 .reports
 
-# ignore generated files
+vendor/
+vendor-bin/
+.phpunit.result.cache
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm*
+.psalm/cache
+
+# GENERATED FILES START
 packages/typescript/generated/*
 !packages/typescript/generated/index.d.ts
 packages/golang/generated.go
-packages/golang/go-jsonschema
+packages/php/src
+# GENERATED FILES END

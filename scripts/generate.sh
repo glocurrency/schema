@@ -1,16 +1,42 @@
 #!/bin/bash
-set -e
 
-# Navigate to the repo root if not already there
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+set -euo pipefail
 
-echo "Generating TypeScript types..."
-# npm run typescript build
+VERSION=$(jq -r '.version' packages/typescript/package.json)
+echo "🔖 Releasing version: v$VERSION"
 
-echo "Generating Go structs..."
-# go install github.com/atombender/go-jsonschema@v0.17.0
-go-jsonschema -p schema -o generated.go --only-models "$REPO_ROOT/schemas/*.json" -o "$REPO_ROOT/packages/golang/generated.go"
+echo "🌀 Running TypeScript codegen..."
+pushd packages/typescript > /dev/null
+npm run generate
+popd > /dev/null
 
-echo "Generating PHP classes..."
-# https://github.com/wol-soft/php-json-schema-model-generator
+echo "⚙️ Running Go codegen..."
+if ! command -v go-jsonschema >/dev/null 2>&1; then
+  echo "🛠️ Installing go-jsonschema..."
+  bash ./scripts/install-go-jsonschema.sh
+fi
+go-jsonschema -p schema -o packages/golang/generated.go --only-models schemas/*.json
+
+echo "🐘 Running PHP codegen..."
+pushd packages/php > /dev/null
+php vendor/bin/s2c generate:fromspec
+popd > /dev/null
+
+echo "📦 Updating composer.json..."
+jq ".version = \"$VERSION\"" packages/php/composer.json > temp.json && mv temp.json packages/php/composer.json
+
+echo "✂️ Updating .gitignore to include generated files..."
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i.bak '/# GENERATED FILES START/,/# GENERATED FILES END/d' .gitignore && rm .gitignore.bak
+else
+  sed -i '/# GENERATED FILES START/,/# GENERATED FILES END/d' .gitignore
+fi
+
+git add .
+git commit -m "chore(release): v$VERSION packages"
+git tag "v$VERSION"
+
+echo "♻️ Restoring .gitignore..."
+git checkout HEAD -- .gitignore
+
+echo "✅ Release ready: v$VERSION"

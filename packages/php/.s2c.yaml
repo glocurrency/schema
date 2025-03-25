@@ -1,0 +1,10 @@
+targetPHPVersion: "8.1"
+files:
+- input: ../../schemas/EchoEvent.json
+  className: EchoEvent
+  targetDirectory: src
+  targetNamespace: GloCurrency\Schema
+- input: ../../schemas/TestEvent.json
+  className: TestEvent
+  targetDirectory: src
+  targetNamespace: GloCurrency\Schema
