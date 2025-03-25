@@ -31,8 +31,6 @@ jobs:
           php-version: '8.2'
           extensions: none, mbstring
 
-      - run: npm install
-      - run: npx changeset version
       - run: ./scripts/release.sh
 
       # - name: Push commit + tags (Go + PHP)

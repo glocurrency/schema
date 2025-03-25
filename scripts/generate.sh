@@ -2,6 +2,14 @@
 
 set -euo pipefail
 
+echo "📦 Installing TypeScript deps..."
+pushd packages/typescript > /dev/null
+npm install
+
+echo "🔖 Applying version bumps with Changesets..."
+npx changeset version
+popd > /dev/null
+
 VERSION=$(jq -r '.version' packages/typescript/package.json)
 echo "🔖 Releasing version: v$VERSION"
 
