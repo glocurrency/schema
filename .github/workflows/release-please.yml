@@ -62,10 +62,8 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-          REMOTE_URL="https://x-access-token:${{ secrets.PHP_PACKAGE_PUSH_TOKEN }}@github.com/glocurrency/schema-php.git"
-
-          git subtree push --prefix=packages/php "$REMOTE_URL" main
-
-          TAG="v${{ needs.version.outputs.version }}"
-          git tag "$TAG"
-          git push "$REMOTE_URL" "$TAG"
+          REMOTE="https://x-access-token:${PUSH_TOKEN}@github.com/glocurrency/schema-php.git"
+          git remote add php-package "$REMOTE"
+          git subtree push --prefix=packages/php "$REMOTE" main
+        env:
+          PUSH_TOKEN: ${{ secrets.PHP_PACKAGE_PUSH_TOKEN }}
