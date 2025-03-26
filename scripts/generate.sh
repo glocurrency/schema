@@ -2,21 +2,26 @@
 
 set -euo pipefail
 
-echo "📦 Installing TypeScript deps..."
-pushd packages/typescript > /dev/null
-npm install
+if [ -z "${VERSION:-}" ]; then
+  echo "❌ VERSION is not set. Please pass it via environment."
+  exit 1
+fi
 
-echo "🔖 Applying version bumps with Changesets..."
-npm run version
-popd > /dev/null
+echo "📦 Releasing version: v$VERSION"
 
-VERSION=$(jq -r '.version' packages/typescript/package.json)
-echo "🔖 Releasing version: v$VERSION"
+echo "🧹 Cleaning up old generated files..."
+find packages/typescript/generated -type f ! -name ".gitkeep" -delete
+rm -f packages/go/generated.go
+rm -rf packages/php/src
 
 echo "🌀 Running TypeScript codegen..."
 pushd packages/typescript > /dev/null
+npm install
 npm run build
 popd > /dev/null
+
+echo "📦 Updating package.json..."
+jq ".version = \"$VERSION\"" packages/typescript/package.json > temp.json && mv temp.json packages/typescript/package.json
 
 echo "⚙️ Running Go codegen..."
 if ! command -v go-jsonschema >/dev/null 2>&1; then
@@ -34,18 +39,9 @@ popd > /dev/null
 echo "📦 Updating composer.json..."
 jq ".version = \"$VERSION\"" packages/php/composer.json > temp.json && mv temp.json packages/php/composer.json
 
-echo "✂️ Updating .gitignore to include generated files..."
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  sed -i.bak '/# GENERATED FILES START/,/# GENERATED FILES END/d' .gitignore && rm .gitignore.bak
-else
-  sed -i '/# GENERATED FILES START/,/# GENERATED FILES END/d' .gitignore
-fi
-
+echo "📥 Adding and committing generated files..."
 git add .
 git commit -m "chore(release): v$VERSION packages"
-git tag "v$VERSION"
+git push origin HEAD
 
-echo "♻️ Restoring .gitignore..."
-git checkout HEAD -- .gitignore
-
-echo "✅ Release ready: v$VERSION"
+echo "✅ Release prepared and committed for v$VERSION"
