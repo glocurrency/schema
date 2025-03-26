@@ -8,6 +8,10 @@ permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   extract-version:
     if: "startsWith(github.head_ref, 'release-please-')"
