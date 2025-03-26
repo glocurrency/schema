@@ -1,0 +1,62 @@
+name: build
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  extract-version:
+    if: "startsWith(github.head_ref, 'release-please-')"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Get PR title
+        id: get_version
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          echo "PR title: $TITLE"
+          
+          VERSION=$(echo "$TITLE" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+          if [ -z "$VERSION" ]; then
+            echo "❌ No version found in PR title."
+            exit 1
+          fi
+
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+  build:
+    needs: extract-version
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: packages/typescript/package-lock.json
+          registry-url: 'https://registry.npmjs.org/'
+          scope: '@glocurrency'
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 1.23
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: none, mbstring
+      - name: Git Identity
+        run: |
+          git config --global user.name 'Github Actions'
+          git config --global user.email 'github-actions@github.com'
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: ./scripts/generate.sh
+        env:
+          VERSION: ${{ needs.extract-version.outputs.version }}
