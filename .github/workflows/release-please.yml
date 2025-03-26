@@ -66,6 +66,8 @@ jobs:
   publish:
     if: needs.version.outputs.release_created == 'true'
     needs: version
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
         with:
