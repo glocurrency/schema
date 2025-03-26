@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/glocurrency/schema/compare/v1.0.1...v1.0.2) (2025-03-26)
+
+
+### Bug Fixes
+
+* pat ([6679dbf](https://github.com/glocurrency/schema/commit/6679dbf8bf51a58026aa72a1504497ab0a47a9e8))
+
 ## [1.0.1](https://github.com/glocurrency/schema/compare/v1.0.0...v1.0.1) (2025-03-26)
 
 
