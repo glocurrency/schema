@@ -64,7 +64,6 @@ jobs:
 
           REMOTE_URL="https://x-access-token:${{ secrets.PHP_PACKAGE_PUSH_TOKEN }}@github.com/glocurrency/schema-php.git"
 
-          # Push the subtree to schema-php
           git subtree push --prefix=packages/php "$REMOTE_URL" main
 
           TAG="v${{ needs.version.outputs.version }}"
