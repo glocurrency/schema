@@ -62,4 +62,4 @@ jobs:
       - run: ./scripts/generate.sh
         env:
           VERSION: ${{ needs.extract-version.outputs.version }}
-          BRANCH: ${{ github.ref_name }}
+          BRANCH: ${{ github.head_ref }}
