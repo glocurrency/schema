@@ -1,4 +1,4 @@
-name: release-php
+name: release-typescript
 
 on:
   create:
