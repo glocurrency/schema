@@ -15,7 +15,7 @@ echo "🔖 Releasing version: v$VERSION"
 
 echo "🌀 Running TypeScript codegen..."
 pushd packages/typescript > /dev/null
-npm run generate
+npm run build
 popd > /dev/null
 
 echo "⚙️ Running Go codegen..."
