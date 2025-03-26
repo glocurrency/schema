@@ -30,7 +30,7 @@ jobs:
           release-type: simple
           bump-minor-pre-major: true
           token: ${{ steps.app-token.outputs.token }}
-  publish:
+  publish-typescript:
     if: needs.version.outputs.release_created == 'true'
     needs: version
     runs-on: ubuntu-latest
@@ -49,3 +49,24 @@ jobs:
       - run: cd packages/typescript && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  publish-php:
+    if: needs.version.outputs.release_created == 'true'
+    needs: version
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          REMOTE_URL="https://x-access-token:${{ secrets.PHP_PACKAGE_PUSH_TOKEN }}@github.com/glocurrency/schema-php.git"
+
+          # Push the subtree to schema-php
+          git subtree push --prefix=packages/php "$REMOTE_URL" main
+
+          TAG="v${{ needs.version.outputs.version }}"
+          git tag "$TAG"
+          git push "$REMOTE_URL" "$TAG"
