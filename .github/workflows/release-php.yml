@@ -1,0 +1,33 @@
+name: release-php
+
+on:
+  create:
+    tags:
+      - '*'
+  delete:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  publish-php:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: 'false'
+      - uses: frankdejonge/use-github-token@1.1.0
+        with:
+          authentication: 'bot:${{ secrets.PHP_PACKAGE_PUSH_TOKEN }}'
+      - uses: actions/cache@v4
+        with:
+          path: './.splitsh-tmp'
+          key: '${{ runner.os }}-splitsh-d-101'
+      - uses: frankdejonge/use-subsplit-publish@1.1.0
+        with:
+          source-branch: 'main'
+          config-path: './.splitsh.json'
+          splitsh-path: './.splitsh-tmp/splitsh-lite'
+          splitsh-version: 'v1.0.1'

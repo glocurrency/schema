@@ -1,0 +1,9 @@
+{
+    "sub-splits": [
+        {
+            "name": "php",
+            "directory": "packages/php",
+            "target": "git@github.com:glocurrency/schema-php.git"
+        }
+    ]
+}

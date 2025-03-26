@@ -3,6 +3,7 @@ name: release-please
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -49,21 +50,3 @@ jobs:
       - run: cd packages/typescript && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-  publish-php:
-    if: needs.version.outputs.release_created == 'true'
-    needs: version
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-
-          REMOTE="https://x-access-token:${PUSH_TOKEN}@github.com/glocurrency/schema-php.git"
-          git remote add php-package "$REMOTE"
-          git subtree push --prefix=packages/php "$REMOTE" main
-        env:
-          PUSH_TOKEN: ${{ secrets.PHP_PACKAGE_PUSH_TOKEN }}
