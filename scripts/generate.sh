@@ -43,7 +43,7 @@ echo "📥 Adding and committing generated files..."
 git add .
 git commit -m "chore(release): v$VERSION packages"
 
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-git push origin "$CURRENT_BRANCH"
+TARGET_BRANCH="${BRANCH:-$(git rev-parse --abbrev-ref HEAD)}"
+git push origin "HEAD:refs/heads/$TARGET_BRANCH"
 
 echo "✅ Release prepared and committed for v$VERSION"
