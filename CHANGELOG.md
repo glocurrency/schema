@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/glocurrency/schema/compare/v1.0.2...v1.0.3) (2025-03-26)
+
+
+### Bug Fixes
+
+* push token ([e04a888](https://github.com/glocurrency/schema/commit/e04a8883748a4f51f169508409ccb5cd10bdacb0))
+
 ## [1.0.2](https://github.com/glocurrency/schema/compare/v1.0.1...v1.0.2) (2025-03-26)
 
 
