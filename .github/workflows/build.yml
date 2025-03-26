@@ -8,14 +8,20 @@ permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   extract-version:
     if: "startsWith(github.head_ref, 'release-please-')"
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
     steps:
       - name: Get PR title
-        id: get_version
+        id: get-version
         run: |
           TITLE="${{ github.event.pull_request.title }}"
           echo "PR title: $TITLE"
@@ -60,3 +66,4 @@ jobs:
       - run: ./scripts/generate.sh
         env:
           VERSION: ${{ needs.extract-version.outputs.version }}
+          BRANCH: ${{ github.head_ref }}
