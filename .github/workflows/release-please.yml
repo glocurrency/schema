@@ -31,22 +31,3 @@ jobs:
           release-type: simple
           bump-minor-pre-major: true
           token: ${{ steps.app-token.outputs.token }}
-  publish-typescript:
-    if: needs.version.outputs.release_created == 'true'
-    needs: version
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
-          cache-dependency-path: packages/typescript/package-lock.json
-          registry-url: 'https://registry.npmjs.org/'
-          scope: '@glocurrency'
-      - run: cd packages/typescript && npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

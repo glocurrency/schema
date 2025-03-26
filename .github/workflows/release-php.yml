@@ -24,10 +24,10 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: './.splitsh-tmp'
-          key: '${{ runner.os }}-splitsh-d-101'
+          key: '${{ runner.os }}-splitsh-d-200'
       - uses: frankdejonge/use-subsplit-publish@1.1.0
         with:
           source-branch: 'main'
           config-path: './.splitsh.json'
           splitsh-path: './.splitsh-tmp/splitsh-lite'
-          splitsh-version: 'v1.0.1'
+          splitsh-version: 'v2.0.0'
