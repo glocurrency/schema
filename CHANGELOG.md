@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/glocurrency/schema/compare/v1.0.3...v1.1.0) (2025-04-03)
+
+
+### Features
+
+* session id ([e9d9938](https://github.com/glocurrency/schema/commit/e9d9938a277f1a0f86b44c7b960b85254e13d496))
+
 ## [1.0.3](https://github.com/glocurrency/schema/compare/v1.0.2...v1.0.3) (2025-03-26)
 
 
