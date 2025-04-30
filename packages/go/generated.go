@@ -38,3 +38,19 @@ type TestEventJsonData struct {
 	// Timestamp corresponds to the JSON schema field "timestamp".
 	Timestamp time.Time `json:"timestamp" yaml:"timestamp" mapstructure:"timestamp"`
 }
+
+type VeriffSessionEventJson struct {
+	// Data corresponds to the JSON schema field "data".
+	Data VeriffSessionEventJsonData `json:"data" yaml:"data" mapstructure:"data"`
+
+	// Type corresponds to the JSON schema field "type".
+	Type string `json:"type" yaml:"type" mapstructure:"type"`
+
+	// Version corresponds to the JSON schema field "version".
+	Version float64 `json:"version" yaml:"version" mapstructure:"version"`
+}
+
+type VeriffSessionEventJsonData struct {
+	// SessionId corresponds to the JSON schema field "sessionId".
+	SessionId string `json:"sessionId" yaml:"sessionId" mapstructure:"sessionId"`
+}
