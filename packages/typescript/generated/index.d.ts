@@ -3,3 +3,4 @@
 
 export * from "./EchoEvent.d";
 export * from "./TestEvent.d";
+export * from "./VeriffSessionEvent.d";
