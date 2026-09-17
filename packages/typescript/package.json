@@ -1,6 +1,6 @@
 {
   "name": "@glocurrency/schema",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "types": "generated/index.d.ts",
   "scripts": {
     "generate": "json2ts --input ../../schemas/ --output generated/",
